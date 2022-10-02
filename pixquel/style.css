@@ -1,0 +1,51 @@
+* {
+    padding: 0px;
+    margin: 0px;
+}
+body {
+    background-color: rgb(30, 77, 146);
+    text-align: center;
+}
+#header {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+#main {
+    margin: 20px auto ;
+    text-align: justify;    
+    line-height: 10px;
+    width: 30px;
+}
+.pixelPoint {
+    display: inline-block;
+    height: 10px;
+    width:  10px;
+    background-color: rgb(255, 255, 255);
+
+    
+    
+}
+#paletas div{
+    margin: 15px;
+    margin-top: 0px;
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    
+}
+#white{
+    background-color: white;
+}
+#black{
+    background-color: black;
+}
+#gray {
+    background-color: gray;
+}
+.selected{
+    border: 3px solid rgb(177, 9, 9);
+}
+#btnGrid {
+    border-radius: 50%;
+    padding: 3px;
+}

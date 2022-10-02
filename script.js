@@ -84,13 +84,13 @@ btnGrid.addEventListener("click",   function () {
     console.log(grids);
     if (grid){
         for (let index = 0; index < grids.length; index += 1) {
-            grids[index].style.border = '0px solid black';
+            grids[index].style.border = '0px solid rgba(100,100,100,0.4)';
             main.style.width = num * 10+ 'px';
         }
         grid = false;
     } else if (!grid) {
         for (let index = 0; index < grids.length; index += 1) {
-            grids[index].style.border = '1px solid black';
+            grids[index].style.border = '1px solid rgba(100,100,100,0.4)';
             main.style.width = num * 12 + 'px';
         }
         grid = true;

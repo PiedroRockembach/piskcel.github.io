@@ -9,6 +9,7 @@ body {
 #header {
     margin-top: 20px;
     margin-bottom: 20px;
+    text-align: center;
 }
 #main {
     margin: 20px auto ;
@@ -48,4 +49,13 @@ body {
 #btnGrid {
     border-radius: 50%;
     padding: 3px;
+}
+#pisqicelImg{
+    margin-right: auto;
+    width: 500px;
+    margin-bottom: 0px;
+
+}
+#numberInput{
+    margin-top: -60px;
 }

@@ -4,7 +4,7 @@ window.onload = function () {
     let btn = document.querySelector("#btn");
 let input = document.querySelector("input");
 let btnGrid = document.querySelector("btnGrid");
-let num = 16;
+let num = 0;
 let body = document.body;
 let color = 'black';
 resizeScrean(); 

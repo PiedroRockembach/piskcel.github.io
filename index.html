@@ -1,32 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>Piskcel</title>
+    <title>Pixels Art</title>
 </head>
 <body>
-    <header id="header">
-        <img src="./pisqicel.png" alt="" id="pisqicelImg">
-        <br>
-        <div id="numberInput">
-        <input type="text" list="lista" id="input" placeholder="Escolha o tamanho da tela">
-        <input type="button" value="Select" id="btn">
-        </div>
-    </header>
-        <section id="paletas">
-            <div id="black" class="selected"></div>
-            <div id="white"></div>
-            <div id="gray"></div>
-            <br>
-            <input type="button" id="btnGrid" value="Grid">
-        </section>
-        <section id="main">
-        
-        </section>
-    <script src="./script.js"></script>
-
+    
+    <section id="body">
+    <h1 id="title">Paleta de Cores</h1>
+    <section id="color-palette"><div id="black" class="color"></div><div id="color1" class="color"></div><div id="color2" class="color"></div><div id="color3" class="color"></div><button id="button-random-color" class="button">Cores aleatórias</button></section>
+    <BR></BR>
+    <button class="button" id="clear-board">Limpar</button>
+    <br>
+    <section id="reseze-area">
+        <label for="board-size">
+            <h2>Escolha o tamanho do lado do seu quadrado (Entre 5 e 50)</h2>
+            <input type="number" id="board-size" min="1" max="50">
+            
+        </label>
+        <button id="generate-board" class="button">VQV</button>
+    </section>
+    <main id="pixel-board"></main>
+    </section>
+   
+<script src="./script.js"></script>
 </body>
 </html>

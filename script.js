@@ -1,98 +1,227 @@
 
 
-window.onload = function () {
-    let btn = document.querySelector("#btn");
-let input = document.querySelector("input");
-let btnGrid = document.querySelector("btnGrid");
-let num = 0;
-let body = document.body;
-let color = 'black';
-resizeScrean(); 
-    
-    
-    btn.addEventListener("click", function (){
-        num = input.value;
-        resizeScrean();
-    });
-   
-    function resizeScrean() {
-        document.querySelector("#main").remove();
-        let table = document.createElement('section');
-        table.id = 'main';
-        body.appendChild(table);
-        
-        table.style.width = num *10 + 'px';
-       
-        for (let index = 0; index < num * num; index += 1) {
-            let liItem = document.createElement('div');
-            liItem.classList.add('pixelPoint');
-            liItem.id = index;            
-            table.appendChild(liItem);
-        }
+//=====================================================================================
+// =========================== CRIA LÓGICA DA PÁGINA ==================================
+//=====================================================================================
 
-        
-        document.querySelector("#main").addEventListener('mousedown', function (event){
-        
-            let obj = event.target;
-            obj.style.backgroundColor = color;
-         });
-         
+// Declarações
+let pallet = document.querySelector('#color-palette');
+let colors = pallet.childNodes;
+let buttonRandomColors = document.querySelector('#button-random-color');
+let title = document.querySelector('title');
+let colorsPallet = [];
+let colorToPaint = 'black';
+let selected = document.querySelector('#selected')
+let reference = [];
+// verifica se existe banco de dados e decide quais cores a peleta terá;
+if (localStorage.getItem('colorPalette') == null) {
+    colorsPallet = [randomColor(),randomColor(),randomColor()];
+} else {
+    colorsPallet = localStorage.getItem('colorPalette').split(',');
+}
+// aplica as cores na paleta
+for (let index = 1; index < 4; index += 1) {
+    colors[index].style.backgroundColor = colorsPallet[index - 1];
+}
 
-         
-        
-
-         
-         
+// Botão que muda as cores da paleta de forma aleatória
+buttonRandomColors.addEventListener('click', () => {
+    colorsPallet = [randomColor(),randomColor(),randomColor()];
+    for (let index = 1; index < 4; index += 1) {
+        colors[index].style.backgroundColor = colorsPallet[index - 1];
     }
-    
-    let black = document.querySelector('#black');
-    let white = document.querySelector('#white');
-    let gray = document.querySelector('#gray');
 
-    black.addEventListener("click", function(){
-        let remover = document.querySelector('.selected');
-        remover.classList.remove('selected');
-        black.classList.add('selected');
-        color = 'black';
-    });
-    white.addEventListener("click", function(){
-        let remover = document.querySelector('.selected');
-        remover.classList.remove('selected');
-        white.classList.add('selected');
-        color = 'white';    
-    });
-    gray.addEventListener("click", function(){
-        let remover = document.querySelector('.selected');
-        remover.classList.remove('selected');
-        gray.classList.add('selected');
-        color = 'gray';   
-    });
+    localStorage.setItem('colorPalette', colorsPallet);
+});
 
-   
+
+
+// Gera cores aleatórias
+function randomColor() {
+    let chars = '0123456789ABCDEF';
+    let colorHex = '#'
+    for (let index = 0; index < 6; index += 1){
+        colorHex += chars[Math.floor(Math.random() * 16)];
+    } 
+    return colorHex;
+}
+
+//=====================================================================================
+// ========================== CRIA QUADRO DE PIXELS ===================================
+//=====================================================================================
+
+// declarações
+let pixelBoard = document.querySelector('#pixel-board');
+let pixel = document.querySelector('#pixel');
+let black =  document.querySelector('#black');
+let color1 = document.querySelector('#color1');
+let color2 = document.querySelector('#color2');
+let color3 = document.querySelector('#color3');
+let savedDraw = [];
+
+// verifica se há um tamanho de pixels salvo 
+if (localStorage.getItem('boardSize') == null) {
+    localStorage.setItem('boardSize', JSON.stringify(25));    
+    startNumberOfPixels = 5;
+} else {
+    startNumberOfPixels = JSON.parse(localStorage.getItem('boardSize'));
+}
+
+// cria os pixels
+
+function createPixels(size) {
+    pixelBoard.style.width = `${42 * size}px`
+    let nums = size * size;
+    for (let index = 0; index < nums; index += 1) {
+        let newPixel = document.createElement('div');
+        newPixel.setAttribute('id', index);
+        newPixel.setAttribute('class', 'pixel')
+        newPixel.addEventListener('mousedown', paint);
+        pixelBoard.appendChild(newPixel);
+    }
+}
+createPixels(startNumberOfPixels);
+// Define o preto como cor inicial
+
+
+black.classList.add('selected');
+
+
+
+
+//=====================================================================================
+// =========================== CRIA PINTURA DOS PIXELS ================================
+//=====================================================================================
+let btnReset = document.querySelector('#clear-board');
+// Seleciona cor na paleta
+black.addEventListener("click", setSelected);
+color1.addEventListener("click", setSelected);
+color2.addEventListener("click", setSelected);
+color3.addEventListener("click", setSelected);
     
-      
+
+black.style.backgroundColor = 'black';
+
+function setSelected(event) {
+    let clicked = event.target;
+    let toRemove = document.querySelector('.selected');
+    toRemove.classList.remove('selected');
+    clicked.classList.add('selected');
+    colorToPaint = clicked.style.backgroundColor;
+
+
+}
+function paint(event) {
+    let target = event.target;
+    target.style.backgroundColor = colorToPaint;
+    saveDraw();
     
 
 }
 
-let grid = false;
-btnGrid.addEventListener("click",   function () {
+// limpa os pixels
+
+btnReset.addEventListener('click',clearPixels);
+
+let allPixels= pixelBoard.childNodes;
+
+function clearPixels() {
+    for (let index = 0; index < allPixels.length; index += 1) {
+        allPixels[index].style.backgroundColor = 'white';
+        
+    }   
+    savedDraw = [];
+    localStorage.setItem('pixelBoard', JSON.stringify(savedDraw));
+    console.log(localStorage.getItem('pixelBoard'));
+}
+
+//=====================================================================================
+// =========================== SALVA DESENHOS NA PÁGINA ===============================
+//=====================================================================================
+
+ 
+  
+// desenha na tela ao carregar a página
+for (let index = 0; index < allPixels.length; index += 1) {
     
-    let grids = document.querySelectorAll('.pixelPoint');
-    let main = document.querySelector('#main');
-    num = input.value; 
-    console.log(grids);
-    if (grid){
-        for (let index = 0; index < grids.length; index += 1) {
-            grids[index].style.border = '0px solid rgba(100,100,100,0.4)';
-            main.style.width = num * 10+ 'px';
-        }
-        grid = false;
-    } else if (!grid) {
-        for (let index = 0; index < grids.length; index += 1) {
-            grids[index].style.border = '1px solid rgba(100,100,100,0.4)';
-            main.style.width = num * 12 + 'px';
-        }
-        grid = true;
+}
+
+
+// salva as cores no Local storage
+localStorage.setItem('colorPalette', colorsPallet);
+
+function saveDraw() {
+    savedDraw = [];
+    for (let index = 0; index < allPixels.length; index += 1) {
+        savedDraw.push(allPixels[index].style.backgroundColor);
     }
-  });
+
+    localStorage.setItem('pixelBoard', JSON.stringify(savedDraw));
+    // console.log(reference);
+   
+};
+
+
+
+// verifica se há desenho para carregar
+if (localStorage.getItem('pixelBoard') === null) {
+    localStorage.setItem('pixelBoard', JSON.stringify(savedDraw));
+} else {
+    reference = JSON.parse(localStorage.getItem('pixelBoard'));
+    for (let index = 0; index < allPixels.length; index += 1) {
+       if (reference[index] == '') {
+        allPixels[index].style.backgroundColor =   'white';
+       } else {
+        allPixels[index].style.backgroundColor = reference[index];
+       }
+    }
+}
+   
+//=====================================================================================
+//============================ ALTERA TAMANHO DO CANVAS ===============================
+//=====================================================================================
+let resizeInput = document.querySelector('#board-size');
+let resizeButton = document.querySelector('#generate-board');
+// let allPixels= pixelBoard.childNodes; *já declarada anteriormente*
+// let pixelBoard = document.querySelector('#pixel-board'); *já declarada anteriormente*
+
+// adiciona escutador de evento de clique ao botão '#generate-board' que chama a função 'resizeBoard()'
+resizeButton.addEventListener('click', resizeBoard);
+
+// função para mudar o tamanho da board 
+function resizeBoard() {
+    // pega todos os valores que serão usados
+    let selectedSize = Math.floor(resizeInput.value);
+    if (selectedSize === 0) {
+        return alert('Board inválido!')
+    }
+    if (selectedSize < 5) {
+        selectedSize = 5;
+    }
+    if (selectedSize > 50) {
+        selectedSize = 50;
+    }
+    
+    let sizeOfFor = allPixels.length;
+    console.log(selectedSize);
+    // exclui os pixels e limpa o local storage
+    for (let index = 0; index < sizeOfFor; index += 1) {
+        let pixelToRemove = document.getElementById(index);
+        pixelToRemove.remove();
+    }
+   
+    // muda o tamanho da board
+    pixelBoard.style.width = `${42 * selectedSize}px`
+    
+    //cria os pixels novamente
+    createPixels(selectedSize);
+
+    //salva o numero atual no local storage
+    localStorage.setItem('boardSize', JSON.stringify(selectedSize));
+
+
+}
+
+
+
+//chamadas

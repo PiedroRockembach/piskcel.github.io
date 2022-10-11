@@ -1,13 +1,21 @@
 body {
+    margin: 0;
+    padding: 0;
     text-align: center;
     background-color: #373466;
     color: #E6C82E;
     text-shadow: 1px 1px 5px black;
     font-size: 14px;
+    display: flex;
+    align-items: baseline;
 }
 
 h1 {
     font-size: 3em;
+}
+input {
+    border-radius: 10px;
+    border: 2px solid #373466;
 }
 #color-palette {
     position: relative;
@@ -73,11 +81,58 @@ h1 {
 }
 #body {
     text-align: center;
-    width: 80%; 
-    display: inline-block;
+    width: 100%; 
+
  }
 
  #reseze-area {
     margin: 20px auto;
     line-height: 1.5em;
  }
+#menu {
+    margin: 10px;
+    padding: 10px;
+    border-radius: 25px;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: flex-start;
+    color: black;
+    font-weight: 600;
+    text-shadow: none;
+    background-color: #E6C82E;
+}
+#container {
+    /* display: none; */
+}
+#draws {
+    margin: 10px auto;
+    padding: 5px;
+    border: 1px solid  black;
+    background-color: aliceblue;
+    border-radius: 10px;
+    min-height: 50px;
+    display: flex;
+    flex-flow: column nowrap;
+
+}
+#save{
+    font-weight: 800;
+    color: aliceblue;
+    margin: 10px auto;
+    background-color: rgb(27, 136, 56);
+}
+#erase {
+    color: aliceblue;
+    background-color: rgb(122, 14, 14);
+    margin: 10px auto;
+}
+.draw-item {
+    background-color:#E6C82E;
+    flex: 1;
+    margin: 5px 0px;
+    border: 1px solid black;
+    padding: 5px 10px;
+    border-radius: 5px;
+
+}

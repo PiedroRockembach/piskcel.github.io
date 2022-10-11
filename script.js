@@ -223,5 +223,55 @@ function resizeBoard() {
 }
 
 
+//=====================================================================================
+//============================ SALVA OS DESENHOS ======================================
+//=====================================================================================
+let menuContainer = document.querySelector('#container');
+let clickmenu = document.querySelector('#click-menu');
+let menuSavedDraws = document.querySelector('#savedDraws');
+let inputDrawname = document.querySelector('#drawName');
+let buttonDrawSave = document.querySelector('#save');
+let testeClick = 1;
 
+// alterna entre reduzir e expandir menu
+clickmenu.addEventListener('mousedown', () => {
+    if (testeClick == 1){
+        menuContainer.style.display = 'flex';
+        menuContainer.style.flexFlow = 'column';
+        testeClick = 2;
+    } else {
+        menuContainer.style.display = 'none';
+        testeClick = 1;
+    }
+    
+});
+
+// cria a div que lista os desenhos
+buttonDrawSave.addEventListener('click', saveNewDraw);
+
+function saveNewDraw(event) {
+    event.preventDefault();
+    let drawName = inputDrawname.value;
+    let newDrawReference = localStorage.getItem('pixelBoard');
+    localStorage.setItem(drawName, newDrawReference);
+    console.log(drawName)
+    addSaveListItem(drawName);
+}
+
+function addSaveListItem(name) {
+    let newDiv = document.createElement('div');
+    newDiv.id = name;
+    newDiv.classList.add('draw-item');
+    newDiv.innerHTML = name;
+    draws.appendChild(newDiv)
+
+}
+
+if (localStorage.getItem('savedDrawsList') != null) {
+    let drawsStorage = localStorage.getItem('savedDrawsList');
+}
+
+//=====================================================================================
+//============================ APAGA OS DESENHOS ======================================
+//=====================================================================================
 //chamadas

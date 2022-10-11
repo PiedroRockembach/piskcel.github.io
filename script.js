@@ -61,7 +61,7 @@ let savedDraw = [];
 
 // verifica se há um tamanho de pixels salvo 
 if (localStorage.getItem('boardSize') == null) {
-    localStorage.setItem('boardSize', JSON.stringify(25));    
+    localStorage.setItem('boardSize', JSON.stringify(5));    
     startNumberOfPixels = 5;
 } else {
     startNumberOfPixels = JSON.parse(localStorage.getItem('boardSize'));
@@ -250,12 +250,14 @@ clickmenu.addEventListener('mousedown', () => {
 buttonDrawSave.addEventListener('click', saveNewDraw);
 
 function saveNewDraw(event) {
+    console.log(inputDrawname.value);
+    if (inputDrawname.value != null && inputDrawname.value != undefined ) {
     event.preventDefault();
     let drawName = inputDrawname.value;
     let newDrawReference = localStorage.getItem('pixelBoard');
     localStorage.setItem(drawName, newDrawReference);
-    console.log(drawName)
     addSaveListItem(drawName);
+    }
 }
 
 function addSaveListItem(name) {
@@ -263,15 +265,26 @@ function addSaveListItem(name) {
     newDiv.id = name;
     newDiv.classList.add('draw-item');
     newDiv.innerHTML = name;
+    newDiv.addEventListener('click', setListSelected);
     draws.appendChild(newDiv)
+
 
 }
 
-if (localStorage.getItem('savedDrawsList') != null) {
-    let drawsStorage = localStorage.getItem('savedDrawsList');
+function setListSelected(event) {
+    let target = event.target;
+    if (target.classList.contains('listDrawSelected')) {
+        target.classList.remove('listDrawSelected');
+    } else {
+        target.classList.add('listDrawSelected');
+        
+    }
+
 }
 
 //=====================================================================================
 //============================ APAGA OS DESENHOS ======================================
 //=====================================================================================
+
+
 //chamadas

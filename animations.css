@@ -1,0 +1,15 @@
+.selected, #arrow {
+    
+    animation: updown 1s infinite;
+}
+
+
+@keyframes updown {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+   
+    40% {
+        transform: translateY(-10px);
+    }
+}

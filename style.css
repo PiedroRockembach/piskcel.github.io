@@ -66,19 +66,6 @@ input {
 #black  {
     background-color: black;
 }
-.selected {
-    
-    animation: updown 1s infinite;
-}
-@keyframes updown {
-    0%, 100% {
-        transform: translateY(0px);
-    }
-   
-    40% {
-        transform: translateY(-10px);
-    }
-}
 #body {
     text-align: center;
     width: 100%; 
@@ -141,4 +128,8 @@ input {
 }
 .listDrawSelected {
     border: 3px solid black;
+}
+#load {
+    color: aliceblue;
+    background-color: black;
 }

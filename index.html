@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="animations.css">
     <title>Pixels Art</title>
 </head>
 <body>
@@ -28,18 +29,20 @@
     <section id="menu">
         <div id="click-menu">
         <h2>Opções</h2>
+        <p id="arrow">&#9660</p>
         </div>
         <div id="container">
             <h3>Salvar desenho</h3>
             <form action="" method="get">
-            <input type="text" name="drawname" id="drawName" placeholder="Escolha o nome do desenho">
-            <button type="submit" class="button" id="save">Salvar</button>
+            <input type="text" name="drawname" id="drawName" placeholder="Escolha o nome do desenho" autocomplete="off">
+            <button type="submit" class="button" id="save">SALVAR</button>
             </form>    
             <h3>Desenhos salvos</h3>
             <div id="savedDraws">
                 <div id="draws"></div>
             </div>
-            <button class="button" id="erase">Apagar</button>
+            <button class="button" id="erase">APAGAR</button>
+            <button class="button" id="load">CARREGAR</button>
     </div>
     </section>
    

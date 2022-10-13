@@ -12,7 +12,7 @@ let title = document.querySelector('title');
 let colorsPallet = [];
 let colorToPaint = 'black';
 let selected = document.querySelector('#selected')
-let reference = [];
+let boardSize = [];
 // verifica se existe banco de dados e decide quais cores a peleta terá;
 if (localStorage.getItem('colorPalette') == null) {
     colorsPallet = [randomColor(),randomColor(),randomColor()];
@@ -167,31 +167,40 @@ function saveDraw() {
 if (localStorage.getItem('pixelBoard') === null) {
     localStorage.setItem('pixelBoard', JSON.stringify(savedDraw));
 } else {
-    reference = JSON.parse(localStorage.getItem('pixelBoard'));
-    for (let index = 0; index < allPixels.length; index += 1) {
-       if (reference[index] == '') {
-        allPixels[index].style.backgroundColor =   'white';
-       } else {
-        allPixels[index].style.backgroundColor = reference[index];
-       }
-    }
+    boardSize = JSON.parse(localStorage.getItem('pixelBoard'));
+    console.log(boardSize);
+    createPixelBoard(boardSize);
+
 }
-   
+function createPixelBoard(reference) {
+    for (let index = 0; index < allPixels.length; index += 1) {
+        if (reference[index] == '' || reference[index] == 'white' ) {
+         allPixels[index].style.backgroundColor =   'white';
+        } else {
+         allPixels[index].style.backgroundColor = reference[index];
+        }
+     }
+}  
 //=====================================================================================
 //============================ ALTERA TAMANHO DO CANVAS ===============================
 //=====================================================================================
 let resizeInput = document.querySelector('#board-size');
 let resizeButton = document.querySelector('#generate-board');
+let selectedSize;
 // let allPixels= pixelBoard.childNodes; *já declarada anteriormente*
 // let pixelBoard = document.querySelector('#pixel-board'); *já declarada anteriormente*
 
 // adiciona escutador de evento de clique ao botão '#generate-board' que chama a função 'resizeBoard()'
-resizeButton.addEventListener('click', resizeBoard);
+resizeButton.addEventListener('click', takeBoardSize);
 
 // função para mudar o tamanho da board 
-function resizeBoard() {
+function takeBoardSize() {
+    selectedSize = Math.floor(resizeInput.value);
+    resizeBoard(selectedSize);
+}
+function resizeBoard(selectedSize) {
     // pega todos os valores que serão usados
-    let selectedSize = Math.floor(resizeInput.value);
+    
     if (selectedSize === 0) {
         return alert('Board inválido!')
     }
@@ -221,6 +230,27 @@ function resizeBoard() {
 
 
 }
+//=====================================================================================
+//======================= CARREGA OS DESENHOS SALVOS ==================================
+//=====================================================================================
+let objectSaveDraws = {};
+//cria LocalStorage ou carrega já existente
+if (localStorage.getItem('savedDraws') == null) {
+    localStorage.setItem('savedDraws', JSON.stringify({}));
+} else {
+    objectSaveDraws = JSON.parse(localStorage.getItem('savedDraws'));
+    let loadSize = Object.values(objectSaveDraws).length;
+    if (loadSize != 0) {
+        for (let index = 0; index < loadSize; index += 1) {
+            console.log(Object.values(objectSaveDraws)[index]);
+            let obj = Object.values(objectSaveDraws)[index]['id'];
+            addSaveListItem(obj)
+            console.log(obj);
+        }
+    }
+
+}
+
 
 
 //=====================================================================================
@@ -231,6 +261,7 @@ let clickmenu = document.querySelector('#click-menu');
 let menuSavedDraws = document.querySelector('#savedDraws');
 let inputDrawname = document.querySelector('#drawName');
 let buttonDrawSave = document.querySelector('#save');
+let arrow = document.querySelector('#arrow');
 let testeClick = 1;
 
 // alterna entre reduzir e expandir menu
@@ -238,9 +269,11 @@ clickmenu.addEventListener('mousedown', () => {
     if (testeClick == 1){
         menuContainer.style.display = 'flex';
         menuContainer.style.flexFlow = 'column';
+        arrow.innerHTML = '&#9650';
         testeClick = 2;
     } else {
         menuContainer.style.display = 'none';
+        arrow.innerHTML = '&#9660';
         testeClick = 1;
     }
     
@@ -250,16 +283,28 @@ clickmenu.addEventListener('mousedown', () => {
 buttonDrawSave.addEventListener('click', saveNewDraw);
 
 function saveNewDraw(event) {
-    console.log(inputDrawname.value);
     if (inputDrawname.value != null && inputDrawname.value != undefined ) {
     event.preventDefault();
+    let currentBoardSize = JSON.parse(localStorage.getItem('boardSize'));
     let drawName = inputDrawname.value;
     let newDrawReference = localStorage.getItem('pixelBoard');
-    localStorage.setItem(drawName, newDrawReference);
     addSaveListItem(drawName);
+    localSaveDraw(drawName, currentBoardSize, newDrawReference);
     }
 }
 
+
+// salva informações do novo desenho
+function localSaveDraw(name, size, code) {
+    let newIndex = Object.values(objectSaveDraws).length += 1;
+    objectSaveDraws[name] = {'id':name, 'size':size, 'code':code, 'index':newIndex,}
+    localStorage.setItem('savedDraws', JSON.stringify(objectSaveDraws))
+    console.log(newIndex);
+
+
+}
+
+// adiciona div na lista
 function addSaveListItem(name) {
     let newDiv = document.createElement('div');
     newDiv.id = name;
@@ -285,6 +330,37 @@ function setListSelected(event) {
 //=====================================================================================
 //============================ APAGA OS DESENHOS ======================================
 //=====================================================================================
+let eraseButton = document.querySelector('#erase');
+
+eraseButton.addEventListener('click', eraseDraw);
+
+function eraseDraw() {
+    let selectedDraw = document.querySelector('.listDrawSelected')
+    let id = selectedDraw.id;
+    delete objectSaveDraws[`${id}`];
+    localStorage.setItem('savedDraws', JSON.stringify(objectSaveDraws));
+    selectedDraw.remove();
+}
+
+
+//=====================================================================================
+//============================ APLICA DESENHOS ========================================
+//=====================================================================================
+let load = document.querySelector('#load');
+
+load.addEventListener('click', loadDraw);
+
+function loadDraw() {
+    let id = document.querySelector('.listDrawSelected').id;
+    let lsItem = JSON.parse(localStorage.getItem('savedDraws'));
+    let obj = lsItem[id]
+    let code = JSON.parse(obj['code']);
+    let size = obj['size'];
+    resizeBoard(size);
+    createPixelBoard(code);
+    console.log(code);
+}
+
 
 
 //chamadas

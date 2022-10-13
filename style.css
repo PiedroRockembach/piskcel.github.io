@@ -94,7 +94,6 @@ input {
     display: none;
 }
 
-
 #draws {
     margin: 10px auto;
     padding: 5px;
@@ -146,4 +145,8 @@ input {
 }
 #claimButton {
     background-color: aliceblue;
+}
+
+@media screen and (max-width: 768px) {
+    
 }

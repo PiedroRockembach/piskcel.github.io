@@ -247,10 +247,12 @@ if (localStorage.getItem('savedDraws') == null) {
             addSaveListItem(obj)
             console.log(obj);
         }
+        let firstListClass = draws.childNodes[0]
+        firstListClass.classList.add('listDrawSelected')
+        // console.log(objectSaveDraws[0])
     }
 
 }
-
 
 
 //=====================================================================================
@@ -299,7 +301,6 @@ function localSaveDraw(name, size, code) {
     let newIndex = Object.values(objectSaveDraws).length += 1;
     objectSaveDraws[name] = {'id':name, 'size':size, 'code':code, 'index':newIndex,}
     localStorage.setItem('savedDraws', JSON.stringify(objectSaveDraws))
-    console.log(newIndex);
 
 
 }
@@ -312,15 +313,18 @@ function addSaveListItem(name) {
     newDiv.innerHTML = name;
     newDiv.addEventListener('click', setListSelected);
     draws.appendChild(newDiv)
+    let firstListClass = draws.childNodes[0]
+    firstListClass.classList.add('listDrawSelected')
 
 
 }
-
+console.log(draws.clild)
+// seleciona item da lista
 function setListSelected(event) {
+    let lastSelected = document.querySelector('.listDrawSelected');
+    lastSelected.classList.remove('listDrawSelected');
     let target = event.target;
-    if (target.classList.contains('listDrawSelected')) {
-        target.classList.remove('listDrawSelected');
-    } else {
+    if (!target.classList.contains('listDrawSelected')) {
         target.classList.add('listDrawSelected');
         
     }
@@ -340,6 +344,8 @@ function eraseDraw() {
     delete objectSaveDraws[`${id}`];
     localStorage.setItem('savedDraws', JSON.stringify(objectSaveDraws));
     selectedDraw.remove();
+    let firstListClass = draws.childNodes[0]
+    firstListClass.classList.add('listDrawSelected')
 }
 
 
@@ -362,5 +368,9 @@ function loadDraw() {
 }
 
 
-
+//=====================================================================================
+//============================ RESGATA DESENHOS ========================================
+//=====================================================================================
+let textarea = document.querySelector('#drawCode');
+let claimButton = document.querySelector('#claimButton');
 //chamadas

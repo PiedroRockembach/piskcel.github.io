@@ -168,7 +168,6 @@ if (localStorage.getItem('pixelBoard') === null) {
     localStorage.setItem('pixelBoard', JSON.stringify(savedDraw));
 } else {
     boardSize = JSON.parse(localStorage.getItem('pixelBoard'));
-    console.log(boardSize);
     createPixelBoard(boardSize);
 
 }
@@ -242,10 +241,8 @@ if (localStorage.getItem('savedDraws') == null) {
     let loadSize = Object.values(objectSaveDraws).length;
     if (loadSize != 0) {
         for (let index = 0; index < loadSize; index += 1) {
-            console.log(Object.values(objectSaveDraws)[index]);
             let obj = Object.values(objectSaveDraws)[index]['id'];
             addSaveListItem(obj)
-            console.log(obj);
         }
         let firstListClass = draws.childNodes[0]
         firstListClass.classList.add('listDrawSelected')
@@ -318,7 +315,7 @@ function addSaveListItem(name) {
 
 
 }
-console.log(draws.clild)
+
 // seleciona item da lista
 function setListSelected(event) {
     let lastSelected = document.querySelector('.listDrawSelected');
@@ -373,4 +370,27 @@ function loadDraw() {
 //=====================================================================================
 let textarea = document.querySelector('#drawCode');
 let claimButton = document.querySelector('#claimButton');
-//chamadas
+let generateButton = document.querySelector('#generateButton');
+
+generateButton.addEventListener('click', genereteCode);
+claimButton.addEventListener('click', claimCode);
+
+function claimCode(event) {
+    event.preventDefault();
+    let code = JSON.parse(textarea.value);
+    addSaveListItem(code.id)
+    localSaveDraw(code.id, code.size, code.code);
+}
+
+function genereteCode(event) {
+    event.preventDefault();
+    let id = document.querySelector('.listDrawSelected').id;
+    let LocalStorageItem = JSON.parse(localStorage.getItem('savedDraws'));
+    let code = LocalStorageItem[id];
+    textarea.value = JSON.stringify(code);
+    textarea.select();
+    document.execCommand('copy');
+    setInterval(() => {
+    textarea.value = 'Copiado!';
+    },300);
+}

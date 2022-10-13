@@ -134,6 +134,15 @@ input {
     color: aliceblue;
     background-color: black;
 }
+#div-claim-buttons {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+   
+}
+#div-claim-buttons button {
+    max-width: 50%;
+}
 #claimButton {
     background-color: aliceblue;
 }

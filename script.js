@@ -380,6 +380,14 @@ function claimCode(event) {
     let code = JSON.parse(textarea.value);
     addSaveListItem(code.id)
     localSaveDraw(code.id, code.size, code.code);
+
+    setTimeout(() => {
+        textarea.value = 'Salvo!';
+        },300);
+    setTimeout(() => {
+        textarea.value = '';
+        },1000);
+    
 }
 
 function genereteCode(event) {
@@ -390,7 +398,10 @@ function genereteCode(event) {
     textarea.value = JSON.stringify(code);
     textarea.select();
     document.execCommand('copy');
-    setInterval(() => {
+    setTimeout(() => {
     textarea.value = 'Copiado!';
     },300);
+    setTimeout(() => {
+        textarea.value = '';
+        },1000);
 }

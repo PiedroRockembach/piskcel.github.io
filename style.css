@@ -91,7 +91,7 @@ input {
     background-color: #E6C82E;
 }
 #container {
-    /* display: none; */
+    display: none;
 }
 
 #draws {
@@ -145,4 +145,8 @@ input {
 }
 #claimButton {
     background-color: aliceblue;
+}
+
+@media screen and (max-width: 768px) {
+    
 }
